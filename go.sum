@@ -99,7 +99,6 @@ github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
 github.com/google/renameio v0.1.0/go.mod h1:KWCgfxg9yswjAJkECMjeO8J8rahYeXnNhOm40UhjYkI=
-github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
 github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
@@ -132,12 +131,8 @@ github.com/hpcloud/tail v1.0.0/go.mod h1:ab1qPbhIpdTxEkNHXyeSf5vhxWSCs/tWer42PpO
 github.com/hydrogen18/memlistener v0.0.0-20141126152155-54553eb933fb/go.mod h1:qEIFzExnS6016fRpRfxrExeVn2gbClQA99gQhnIcdhE=
 github.com/imkira/go-interpol v1.1.0/go.mod h1:z0h2/2T3XF8kyEPpRgJ3kmNv+C43p+I/CoI+jC3w2iA=
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
-github.com/iotaledger/hive.go v0.0.0-20210819120742-a8536d801087 h1:X5J9XeFx6+vRaOeWGHDHPurJPt/Vt1D+4L5mQEYQpXs=
-github.com/iotaledger/hive.go v0.0.0-20210819120742-a8536d801087/go.mod h1:sWc4uLQAt20Zugh1caFmI5NL+1KgfKiums4TrxGf3nk=
 github.com/iotaledger/hive.go v0.0.0-20211124122420-c2f1493d35a5 h1:2CSr68Ow3Sz4y4MSMqsHfHTdPfJWQ3zMrjGc7iqZqSQ=
 github.com/iotaledger/hive.go v0.0.0-20211124122420-c2f1493d35a5/go.mod h1:qfpjDWmi+h7AAOkqjZslPHTNeQ7Gf7kTCdIOzbMyjhc=
-github.com/ipfs/go-datastore v0.4.6 h1:zU2cmweykxJ+ziXnA2cPtsLe8rdR/vrthOipLPuf6kc=
-github.com/ipfs/go-datastore v0.4.6/go.mod h1:XSipLSc64rFKSFRFGo1ecQl+WhYce3K7frtpHkyPFUc=
 github.com/ipfs/go-datastore v0.5.0 h1:rQicVCEacWyk4JZ6G5bD9TKR7lZEG1MWcG7UdWYrFAU=
 github.com/ipfs/go-datastore v0.5.0/go.mod h1:9zhEApYMTl17C8YDp7JmU7sQZi2/wqiYh73hakZ90Bk=
 github.com/ipfs/go-detect-race v0.0.1 h1:qX/xay2W3E4Q1U7d9lNs1sU9nvguX0a7319XbyQ6cOk=
