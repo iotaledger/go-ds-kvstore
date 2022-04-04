@@ -340,7 +340,14 @@ func (d *Datastore) Batch(ctx context.Context) (ds.Batch, error) {
 		return nil, err
 	}
 
-	return &Batch{d.store.Batched()}, nil
+	batchedMutation, err := d.store.Batched()
+	if err != nil {
+		return nil, fmt.Errorf("kvstore error during Batch: %w", err)
+	}
+
+	return &Batch{
+		batch: batchedMutation,
+	}, nil
 }
 
 func (d *Datastore) Close() error {
