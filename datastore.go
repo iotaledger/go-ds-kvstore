@@ -35,7 +35,11 @@ func NewDatastore(store kvstore.KVStore) *Datastore {
 
 // Get retrieves the object `value` named by `key`.
 // Get will return ErrNotFound if the key is not mapped to a value.
-func (d *Datastore) Get(_ context.Context, key ds.Key) ([]byte, error) {
+func (d *Datastore) Get(ctx context.Context, key ds.Key) ([]byte, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
 	value, err := d.store.Get(key.Bytes())
 
 	switch err {
@@ -53,7 +57,11 @@ func (d *Datastore) Get(_ context.Context, key ds.Key) ([]byte, error) {
 // Has returns whether the `key` is mapped to a `value`.
 // In some contexts, it may be much cheaper only to check for existence of
 // a value, rather than retrieving the value itself.
-func (d *Datastore) Has(_ context.Context, key ds.Key) (bool, error) {
+func (d *Datastore) Has(ctx context.Context, key ds.Key) (bool, error) {
+	if err := ctx.Err(); err != nil {
+		return false, err
+	}
+
 	exists, err := d.store.Has(key.Bytes())
 	if err != nil {
 		return false, fmt.Errorf("kvstore error during Has: %w", err)
@@ -65,7 +73,11 @@ func (d *Datastore) Has(_ context.Context, key ds.Key) (bool, error) {
 // GetSize returns the size of the `value` named by `key`.
 // In some contexts, it may be much cheaper to only get the size of the
 // value rather than retrieving the value itself.
-func (d *Datastore) GetSize(_ context.Context, key ds.Key) (int, error) {
+func (d *Datastore) GetSize(ctx context.Context, key ds.Key) (int, error) {
+	if err := ctx.Err(); err != nil {
+		return 0, err
+	}
+
 	value, err := d.store.Get(key.Bytes())
 
 	switch err {
@@ -82,7 +94,7 @@ func (d *Datastore) GetSize(_ context.Context, key ds.Key) (int, error) {
 
 // handleUnknownQueryOrder is used if the kvstore implementation can't handle
 // the queried order, so the naive query logic handles it itself.
-func (d *Datastore) handleUnknownQueryOrder(q query.Query, baseOrder query.Order) (query.Results, error) {
+func (d *Datastore) handleUnknownQueryOrder(ctx context.Context, q query.Query, baseOrder query.Order) (query.Results, error) {
 
 	// since we can't apply limits and offsets without correct order, we need to
 	// skip these things in the base query to get all results.
@@ -95,7 +107,7 @@ func (d *Datastore) handleUnknownQueryOrder(q query.Query, baseOrder query.Order
 	}
 
 	// perform the base query.
-	res, err := d.Query(context.Background(), baseQuery)
+	res, err := d.Query(ctx, baseQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +136,11 @@ func (d *Datastore) handleUnknownQueryOrder(q query.Query, baseOrder query.Order
 //   entries, _ := result.Rest()
 //   for entry := range entries { ... }
 //
-func (d *Datastore) Query(_ context.Context, q query.Query) (query.Results, error) {
+func (d *Datastore) Query(ctx context.Context, q query.Query) (query.Results, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
 	var (
 		prefix      = ds.NewKey(q.Prefix).String()
 		filters     = q.Filters
@@ -153,7 +169,7 @@ func (d *Datastore) Query(_ context.Context, q query.Query) (query.Results, erro
 		case query.OrderByKeyDescending, *query.OrderByKeyDescending:
 			iterDirection = kvstore.IterDirectionBackward
 		default:
-			return d.handleUnknownQueryOrder(q, nil)
+			return d.handleUnknownQueryOrder(ctx, q, nil)
 		}
 
 	default:
@@ -167,7 +183,7 @@ func (d *Datastore) Query(_ context.Context, q query.Query) (query.Results, erro
 				baseOrder = o
 			}
 		}
-		return d.handleUnknownQueryOrder(q, baseOrder)
+		return d.handleUnknownQueryOrder(ctx, q, baseOrder)
 	}
 
 	filterFunc := func(entry query.Entry) bool {
@@ -275,7 +291,11 @@ func (d *Datastore) Query(_ context.Context, q query.Query) (query.Results, erro
 // Ultimately, the lowest-level datastore will need to do some value checking
 // or risk getting incorrect values. It may also be useful to expose a more
 // type-safe interface to your application, and do the checking up-front.
-func (d *Datastore) Put(_ context.Context, key ds.Key, value []byte) error {
+func (d *Datastore) Put(ctx context.Context, key ds.Key, value []byte) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	if err := d.store.Set(key.Bytes(), value); err != nil {
 		return fmt.Errorf("kvstore error during Set: %w", err)
 	}
@@ -285,7 +305,11 @@ func (d *Datastore) Put(_ context.Context, key ds.Key, value []byte) error {
 
 // Delete removes the value for given `key`. If the key is not in the
 // datastore, this method returns no error.
-func (d *Datastore) Delete(_ context.Context, key ds.Key) error {
+func (d *Datastore) Delete(ctx context.Context, key ds.Key) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	if err := d.store.Delete(key.Bytes()); err != nil {
 		return fmt.Errorf("kvstore error during Delete: %w", err)
 	}
@@ -299,7 +323,11 @@ func (d *Datastore) Delete(_ context.Context, key ds.Key) error {
 // satisfy these requirements then Sync may be a no-op.
 //
 // If the prefix fails to Sync this method returns an error.
-func (d *Datastore) Sync(_ context.Context, _ ds.Key) error {
+func (d *Datastore) Sync(ctx context.Context, _ ds.Key) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	if err := d.store.Flush(); err != nil {
 		return fmt.Errorf("kvstore error during Flush: %w", err)
 	}
@@ -307,7 +335,11 @@ func (d *Datastore) Sync(_ context.Context, _ ds.Key) error {
 	return nil
 }
 
-func (d *Datastore) Batch(_ context.Context) (ds.Batch, error) {
+func (d *Datastore) Batch(ctx context.Context) (ds.Batch, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
 	return &Batch{d.store.Batched()}, nil
 }
 
@@ -346,28 +378,43 @@ var _ ds.Batch = (*Batch)(nil)
 // Ultimately, the lowest-level datastore will need to do some value checking
 // or risk getting incorrect values. It may also be useful to expose a more
 // type-safe interface to your application, and do the checking up-front.
-func (b *Batch) Put(_ context.Context, key ds.Key, value []byte) error {
+func (b *Batch) Put(ctx context.Context, key ds.Key, value []byte) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	if err := b.batch.Set(key.Bytes(), value); err != nil {
 		return fmt.Errorf("kvstore error during Set within batch: %w", err)
 	}
+
 	return nil
 }
 
 // Delete removes the value for given `key`. If the key is not in the
 // datastore, this method returns no error.
-func (b *Batch) Delete(_ context.Context, key ds.Key) error {
+func (b *Batch) Delete(ctx context.Context, key ds.Key) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	if err := b.batch.Delete(key.Bytes()); err != nil {
 		return fmt.Errorf("kvstore error during Delete within batch: %w", err)
 	}
+
 	return nil
 }
 
 // Commit finalizes a transaction, attempting to commit it to the Datastore.
 // May return an error if the transaction has gone stale. The presence of an
 // error is an indication that the data was not committed to the Datastore.
-func (b *Batch) Commit(_ context.Context) error {
+func (b *Batch) Commit(ctx context.Context) error {
+	if err := ctx.Err(); err != nil {
+		return err
+	}
+
 	if err := b.batch.Commit(); err != nil {
 		return fmt.Errorf("kvstore error during Commit within batch: %w", err)
 	}
+
 	return nil
 }
