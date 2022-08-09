@@ -5,7 +5,7 @@ import (
 
 	dstest "github.com/ipfs/go-datastore/test"
 
-	"github.com/iotaledger/hive.go/kvstore/mapdb"
+	"github.com/iotaledger/hive.go/core/kvstore/mapdb"
 )
 
 func TestKVStoreDatastore(t *testing.T) {
