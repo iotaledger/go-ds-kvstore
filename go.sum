@@ -113,8 +113,8 @@ github.com/hydrogen18/memlistener v0.0.0-20141126152155-54553eb933fb/go.mod h1:q
 github.com/hydrogen18/memlistener v0.0.0-20200120041712-dcc25e7acd91/go.mod h1:qEIFzExnS6016fRpRfxrExeVn2gbClQA99gQhnIcdhE=
 github.com/imkira/go-interpol v1.1.0/go.mod h1:z0h2/2T3XF8kyEPpRgJ3kmNv+C43p+I/CoI+jC3w2iA=
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
-github.com/iotaledger/hive.go/core v1.0.0-beta.1 h1:qLSVIiCE85GzZMzzKzj/z1aOFLhc1KbMwuuueyDTFz8=
-github.com/iotaledger/hive.go/core v1.0.0-beta.1/go.mod h1:OugZdA+vjL1OI+aGWkjud8w++PQZ3YJ3cdirvOgFeLA=
+github.com/iotaledger/hive.go/core v1.0.0-beta.2 h1:+d+lhK8TvbTWkJsHTpnRxsXSiyDzTaFn2oLRc+AIG2Q=
+github.com/iotaledger/hive.go/core v1.0.0-beta.2/go.mod h1:bYl+7/qkM+rWiw8F6JF7dF5/9MW3y8F7j7DxDnTqWeE=
 github.com/ipfs/go-datastore v0.5.1 h1:WkRhLuISI+XPD0uk3OskB0fYFSyqK8Ob5ZYew9Qa1nQ=
 github.com/ipfs/go-datastore v0.5.1/go.mod h1:9zhEApYMTl17C8YDp7JmU7sQZi2/wqiYh73hakZ90Bk=
 github.com/ipfs/go-detect-race v0.0.1 h1:qX/xay2W3E4Q1U7d9lNs1sU9nvguX0a7319XbyQ6cOk=
