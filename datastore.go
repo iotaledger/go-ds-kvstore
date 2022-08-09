@@ -8,13 +8,13 @@ import (
 
 	"github.com/jbenet/goprocess"
 
-	"github.com/iotaledger/hive.go/kvstore"
+	"github.com/iotaledger/hive.go/core/kvstore"
 
 	ds "github.com/ipfs/go-datastore"
 	"github.com/ipfs/go-datastore/query"
 )
 
-// Datastore is a github.com/iotaledger/hive.go/kvstore backed github.com/ipfs/go-datastore
+// Datastore is a github.com/iotaledger/hive.go/core/kvstore backed github.com/ipfs/go-datastore
 type Datastore struct {
 	store   kvstore.KVStore
 	status  int32
