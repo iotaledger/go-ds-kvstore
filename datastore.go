@@ -2,19 +2,19 @@ package kvstoreds
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"sync/atomic"
 
+	ds "github.com/ipfs/go-datastore"
+	"github.com/ipfs/go-datastore/query"
 	"github.com/jbenet/goprocess"
 
 	"github.com/iotaledger/hive.go/core/kvstore"
-
-	ds "github.com/ipfs/go-datastore"
-	"github.com/ipfs/go-datastore/query"
 )
 
-// Datastore is a github.com/iotaledger/hive.go/core/kvstore backed github.com/ipfs/go-datastore
+// Datastore is a github.com/iotaledger/hive.go/core/kvstore backed github.com/ipfs/go-datastore.
 type Datastore struct {
 	store   kvstore.KVStore
 	status  int32
@@ -41,13 +41,11 @@ func (d *Datastore) Get(ctx context.Context, key ds.Key) ([]byte, error) {
 	}
 
 	value, err := d.store.Get(key.Bytes())
+	if err != nil {
+		if errors.Is(err, kvstore.ErrKeyNotFound) {
+			return nil, ds.ErrNotFound
+		}
 
-	switch err {
-	case nil:
-		// do nothing
-	case kvstore.ErrKeyNotFound:
-		return nil, ds.ErrNotFound
-	default:
 		return nil, fmt.Errorf("kvstore error during Get: %w", err)
 	}
 
@@ -79,13 +77,11 @@ func (d *Datastore) GetSize(ctx context.Context, key ds.Key) (int, error) {
 	}
 
 	value, err := d.store.Get(key.Bytes())
+	if err != nil {
+		if errors.Is(err, kvstore.ErrKeyNotFound) {
+			return -1, ds.ErrNotFound
+		}
 
-	switch err {
-	case nil:
-		// do nothing
-	case kvstore.ErrKeyNotFound:
-		return -1, ds.ErrNotFound
-	default:
 		return -1, fmt.Errorf("kvstore error during Get: %w", err)
 	}
 
@@ -127,15 +123,14 @@ func (d *Datastore) handleUnknownQueryOrder(ctx context.Context, q query.Query, 
 // Query searches the datastore and returns a query result. This function
 // may return before the query actually runs. To wait for the query:
 //
-//   result, _ := ds.Query(q)
+//	result, _ := ds.Query(q)
 //
-//   // use the channel interface; result may come in at different times
-//   for entry := range result.Next() { ... }
+//	// use the channel interface; result may come in at different times
+//	for entry := range result.Next() { ... }
 //
-//   // or wait for the query to be completely done
-//   entries, _ := result.Rest()
-//   for entry := range entries { ... }
-//
+//	// or wait for the query to be completely done
+//	entries, _ := result.Rest()
+//	for entry := range entries { ... }
 func (d *Datastore) Query(ctx context.Context, q query.Query) (query.Results, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
@@ -153,7 +148,7 @@ func (d *Datastore) Query(ctx context.Context, q query.Query) (query.Results, er
 	)
 
 	if prefix != "/" {
-		prefix = prefix + "/"
+		prefix += "/"
 	}
 
 	var iterDirection kvstore.IterDirection
@@ -183,6 +178,7 @@ func (d *Datastore) Query(ctx context.Context, q query.Query) (query.Results, er
 				baseOrder = o
 			}
 		}
+
 		return d.handleUnknownQueryOrder(ctx, q, baseOrder)
 	}
 
@@ -192,6 +188,7 @@ func (d *Datastore) Query(ctx context.Context, q query.Query) (query.Results, er
 				return false
 			}
 		}
+
 		return true
 	}
 
@@ -272,6 +269,7 @@ func (d *Datastore) Query(ctx context.Context, q query.Query) (query.Results, er
 				if returnSizes {
 					entry.Size = len(entry.Value)
 				}
+
 				return processEntry(entry)
 			}, iterDirection); err != nil {
 				sendOrInterrupt(query.Result{Error: fmt.Errorf("kvstore error during Iterate: %w", err)})
@@ -354,6 +352,7 @@ func (d *Datastore) Close() error {
 	if !atomic.CompareAndSwapInt32(&d.status, 0, 1) {
 		// already closed, or closing.
 		d.wg.Wait()
+
 		return nil
 	}
 	close(d.closing)
