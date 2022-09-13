@@ -3,7 +3,7 @@ module github.com/iotaledger/go-ds-kvstore
 go 1.18
 
 require (
-	github.com/iotaledger/hive.go/core v1.0.0-beta.5
+	github.com/iotaledger/hive.go/core v1.0.0-beta.6
 	github.com/ipfs/go-datastore v0.6.0
 	github.com/jbenet/goprocess v0.1.4
 )
