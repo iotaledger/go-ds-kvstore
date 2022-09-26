@@ -3,7 +3,7 @@ module github.com/iotaledger/go-ds-kvstore
 go 1.18
 
 require (
-	github.com/iotaledger/hive.go/core v1.0.0-beta.5
+	github.com/iotaledger/hive.go/core v1.0.0-rc.1
 	github.com/ipfs/go-datastore v0.6.0
 	github.com/jbenet/goprocess v0.1.4
 )
@@ -24,7 +24,7 @@ require (
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/sasha-s/go-deadlock v0.3.1 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
-	golang.org/x/crypto v0.0.0-20220829220503-c86fa9a7ed90 // indirect
-	golang.org/x/sys v0.0.0-20220908164124-27713097b956 // indirect
+	golang.org/x/crypto v0.0.0-20220924013350-4ba4fb4dd9e7 // indirect
+	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 )
