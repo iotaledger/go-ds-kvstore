@@ -1,6 +1,6 @@
 # go-ds-kvstore: KVStore-backed datastore
 
-`go-ds-kvstore` implements the [go-datastore](https://github.com/ipfs/go-datastore) interface using a [iotaledger/hive.go/kvstore](https://github.com/iotaledger/hive.go/blob/develop/core/kvstore/kvstore.go) backend.
+`go-ds-kvstore` implements the [go-datastore](https://github.com/ipfs/go-datastore) interface using a [iotaledger/hive.go/kvstore](https://github.com/iotaledger/hive.go/blob/master/kvstore/kvstore.go) backend.
 
 ## Status
 

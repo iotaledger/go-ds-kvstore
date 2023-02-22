@@ -11,7 +11,7 @@ import (
 	"github.com/ipfs/go-datastore/query"
 	"github.com/jbenet/goprocess"
 
-	"github.com/iotaledger/hive.go/core/kvstore"
+	"github.com/iotaledger/hive.go/kvstore"
 )
 
 // Datastore is a github.com/iotaledger/hive.go/core/kvstore backed github.com/ipfs/go-datastore.
