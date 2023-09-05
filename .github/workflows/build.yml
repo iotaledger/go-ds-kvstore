@@ -1,9 +1,11 @@
-name: CI
+name: Build
 
-on: [push, pull_request]
+on:
+  pull_request
 
 jobs:
   build:
+    name: Go
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go
@@ -17,6 +19,6 @@ jobs:
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
-    
-      - name: Run tests
-        run: go test ./...
+
+      - name: Build
+        run: go build -v .

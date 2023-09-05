@@ -1,6 +1,11 @@
 name: GolangCIlint
 
-on: pull_request
+on:
+  pull_request:
+    paths-ignore:
+      - 'documentation/**'
+      - 'scripts/**'
+      - 'tools/**'
 
 jobs:
   golangci-lint:
